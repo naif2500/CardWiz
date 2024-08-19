@@ -3,6 +3,7 @@ import React from 'react';
 import CardSpread from '@/components/animata/card/card-spread';
 
 const HeroSection = () => {
+  
   return (
     <div className="hero bg-white min-h-[80vh]">
       <div className="hero-content flex-col lg:flex-row-reverse ">
