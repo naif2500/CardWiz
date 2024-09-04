@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
-import CardSpread from '@/components/animata/card/card-spread';
+import Image from 'next/image';
+
 
 const HeroSection = () => {
   
@@ -8,7 +9,12 @@ const HeroSection = () => {
     <div className="hero bg-white min-h-[80vh]">
       <div className="hero-content flex-col lg:flex-row-reverse ">
         <div className='max-w-sm'>
-          <CardSpread />
+          <Image
+            src="/cards.svg" 
+            alt="hero image"
+            width={1019.09}
+            height={897.62}
+          />
         </div>
         
         <div className='lg:mr-20'>
@@ -24,10 +30,23 @@ const HeroSection = () => {
   );
 };
 
+const IconGrid = () => {
+  return (
+    <div className="bg-gray-400 flex justify-center space-x-48 py-2">
+      <div className="text-center">
+        
+        <p className="mt-2">lavet af/Made by Soufiane Zaydi</p>
+      </div>
+      
+    </div>
+  );
+};
+
 const Page = () => {
   return (
     <div>
       <HeroSection />
+      <IconGrid/>
     </div>
   );
 };
