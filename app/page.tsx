@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import Link from "next/link";
 import Image from 'next/image';
 
 
@@ -23,7 +24,7 @@ const HeroSection = () => {
           Unlock your learning potential with customizable flashcards. Whether you&apos;re studying for exams, learning a new language, or enhancing your skills, our tool helps you retain knowledge more effectively and efficiently.
            
           </p>
-          <button className="btn btn-primary">Get Started</button>
+          <button className="btn btn-primary"><Link href="/login">Get Started</Link></button>
         </div>
       </div>
     </div>
