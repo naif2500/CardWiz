@@ -1,11 +1,9 @@
-// app/dashboard/page.tsx
 "use client"
 import { useAuth } from "../hooks/useAuth"; // Assuming you have a custom hook for auth
 import { useState, useEffect } from "react";
 import { db } from "../../firebase";
 import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import FlipCard from "@/components/animata/card/flip-card"; // Import FlipCard component
-
 
 interface Flashcard {
   id: string;
@@ -21,8 +19,12 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (user) {
+      // Log the user's UID
+      console.log("Authenticated User UID:", user.uid);
+  
       const fetchFlashcards = async () => {
-        const q = query(collection(db, "flashcards"), where("uid", "==", user.uid));
+        // Fetch flashcards from the user's sub-collection
+        const q = query(collection(db, "users", user.uid, "flashcards"));
         const querySnapshot = await getDocs(q);
         const cards = querySnapshot.docs.map(doc => ({
           id: doc.id,
@@ -33,24 +35,38 @@ export default function Dashboard() {
       fetchFlashcards();
     }
   }, [user]);
+  
 
   const handleAddFlashcard = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (user) {
       try {
-        await addDoc(collection(db, "flashcards"), {
-          uid: user.uid,
+        // Add flashcard to Firestore under the user's sub-collection
+        const docRef = await addDoc(collection(db, "users", user.uid, "flashcards"), {
           question,
           answer,
         });
+  
+        // Add the new flashcard to the state immediately
+        setFlashcards(prevFlashcards => [
+          ...prevFlashcards,
+          {
+            id: docRef.id,  // The Firestore-generated ID for the new document
+            question,
+            answer,
+          },
+        ]);
+  
+        // Clear the input fields
         setQuestion("");
         setAnswer("");
       } catch (error) {
         const errorMessage = (error as Error).message;
-        console.error('Error fetching flashcards:', errorMessage);
+        console.error('Error adding flashcard:', errorMessage);
       }
     }
   };
+  
 
   return (
     <div className="max-w-4xl mx-auto p-8">
